@@ -5,15 +5,19 @@ export class UserDto {
   @ApiProperty()
   @IsString()
   name: string;
+
   @ApiProperty()
   @IsEmail()
   email: string;
+
   @ApiProperty()
   @IsString()
   password: string;
+
   @ApiProperty()
   @IsString()
   cpf: string;
+
   @ApiProperty()
   @IsString()
   role: string;
