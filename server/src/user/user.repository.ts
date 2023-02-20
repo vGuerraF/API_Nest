@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IUserEntity } from './entities/user.entity';
 import { PartialUserDto } from './services/dto/partialUserInput.dto';
+import { Exception } from './utils/exceptions/exception';
 import { Exceptions } from './utils/exceptions/exceptionsHelper';
 
 @Injectable()
@@ -13,34 +14,50 @@ export class UserRepository {
       const CreatedUser = await this.prisma.user.create({ data: user });
       return CreatedUser;
     } catch (err) {
-      throw { message: err.message, exception: Exceptions.DatabaseException };
+      throw new Exception(Exceptions.DatabaseException, err.message);
     }
   }
 
   async updateUser(user: PartialUserDto): Promise<IUserEntity> {
-    const UpdatedUser = await this.prisma.user.update({
-      where: { id: user.id },
-      data: user,
-    });
-    return UpdatedUser;
+    try {
+      const UpdatedUser = await this.prisma.user.update({
+        where: { id: user.id },
+        data: user,
+      });
+      return UpdatedUser;
+    } catch (err) {
+      throw new Exception(Exceptions.DatabaseException, err.message);
+    }
   }
 
   async deleteUser(id: string): Promise<IUserEntity> {
-    const deleteUser = await this.prisma.user.delete({
-      where: { id: id },
-    });
-    return deleteUser;
+    try {
+      const deleteUser = await this.prisma.user.delete({
+        where: { id: id },
+      });
+      return deleteUser;
+    } catch (err) {
+      throw new Exception(Exceptions.DatabaseException, err.message);
+    }
   }
 
   async findAllUsers(): Promise<IUserEntity[]> {
-    const allUsers = await this.prisma.user.findMany();
-    return allUsers;
+    try {
+      const allUsers = await this.prisma.user.findMany();
+      return allUsers;
+    } catch (err) {
+      throw new Exception(Exceptions.DatabaseException, err.message);
+    }
   }
 
   async findUserById(id: string): Promise<IUserEntity> {
-    const foundUser = await this.prisma.user.findUniqueOrThrow({
-      where: { id: id },
-    });
-    return foundUser;
+    try {
+      const foundUser = await this.prisma.user.findUniqueOrThrow({
+        where: { id: id },
+      });
+      return foundUser;
+    } catch (err) {
+      throw new Exception(Exceptions.DatabaseException, err.message);
+    }
   }
 }
