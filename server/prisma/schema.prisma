@@ -11,25 +11,26 @@ datasource db {
 }
 
 model User {
-  id                  String           @id @unique
-  name                String
-  email               String           @unique
-  password            String
-  cpf                 String           @unique
-  role                String
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  attendanceLists     AttendanceList[]
-  ClassroomStudents   Classroom?       @relation(fields: [classroomStudentsId], references: [id], name: "classroom student")
-  classroomStudentsId String?
-  ClassroomTeacher    Classroom?       @relation(fields: [classroomTeacherId], references: [id])
-  classroomTeacherId  String?
+  id                 String           @id @unique
+  geralId            Int              @unique @default(autoincrement())
+  name               String
+  email              String           @unique
+  password           String
+  cpf                String           @unique
+  role               String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  attendanceLists    AttendanceList[]
+  ClassroomStudent   Classroom?       @relation(fields: [classroomStudentId], references: [id], name: "classroom student")
+  classroomStudentId String?
+  ClassroomTeacher   Classroom?       @relation(fields: [classroomTeacherId], references: [id])
+  classroomTeacherId String?
 }
 
 model AttendanceList {
   id          String    @id @unique
   classroomId String
-  Classroom   Classroom @relation(fields: [classroomId], references: [id])
+  Classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
   startDate   DateTime
   endDate     DateTime
   students    User[]
@@ -37,11 +38,11 @@ model AttendanceList {
 }
 
 model Classroom {
-  id               String           @id @unique
-  name             String
-  theme            String
-  subject          String
-  attendancesLists AttendanceList[]
-  students         User[]           @relation(name: "classroom student")
-  teachers         User[]
+  id          String           @id @unique
+  name        String
+  theme       String
+  subject     String
+  attendances AttendanceList[]
+  students    User[]           @relation(name: "classroom student")
+  teachers    User[]
 }
