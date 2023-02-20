@@ -1,16 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class CreateClassroomDto {
+export class ResgisterOnAttendanceListDto {
   @ApiProperty()
   @IsString()
-  name: string;
+  attendanceListId: string;
 
   @ApiProperty()
   @IsString()
-  theme: string;
-
-  @ApiProperty()
-  @IsString()
-  subject: string;
+  userId: string;
 }
