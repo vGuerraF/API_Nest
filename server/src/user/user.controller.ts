@@ -12,9 +12,7 @@ import { UserService } from './services/user.service';
 import { IUserEntity } from './entities/user.entity';
 import { UserDto } from './services/dto/userInput.dto';
 import { PartialUserDto } from './services/dto/partialUserInput.dto';
-import { IHttpResponse } from './utils/httpResponse';
-import { BadRequestException } from '@nestjs/common';
-import { response, Response } from 'express';
+import { Response } from 'express';
 import { HandleException } from './utils/exceptions/exceptionsHelper';
 
 @Controller('user')
@@ -31,7 +29,7 @@ export class UserController {
     try {
       return await this.service.getUserById(userId);
     } catch (err) {
-      console.log(err);
+      HandleException(err);
     }
   }
 
@@ -59,7 +57,7 @@ export class UserController {
     try {
       return await this.service.updateUser(userData);
     } catch (err) {
-      console.log(err);
+      HandleException(err);
     }
   }
 
