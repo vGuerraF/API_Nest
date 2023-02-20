@@ -29,11 +29,9 @@ export class UserService {
 
   async deleteUserById(userId: string): Promise<boolean> {
     try {
-      const existUser = this.userRepository.deleteUser(userId);
+      const existUser = await this.userRepository.deleteUser(userId);
       if (existUser) {
         return true;
-      } else {
-        return false;
       }
     } catch (err) {
       console.log(err);
