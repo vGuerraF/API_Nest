@@ -15,6 +15,7 @@ import { PartialUserDto } from './services/dto/partialUserInput.dto';
 import { IHttpResponse } from './utils/httpResponse';
 import { BadRequestException } from '@nestjs/common';
 import { response, Response } from 'express';
+import { HandleException } from './utils/exceptions/exceptionsHelper';
 
 @Controller('user')
 export class UserController {
@@ -49,8 +50,7 @@ export class UserController {
       });
       response.status(201).send(result);
     } catch (err) {
-      console.log(err);
-      throw new BadRequestException(err.message);
+      HandleException(err);
     }
   }
 
