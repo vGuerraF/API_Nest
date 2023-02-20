@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ResgisterOnAttendanceListDto } from 'src/classroom/dto/register-on-attendance-list.dto';
-import { HandleException } from 'src/user/utils/exceptions/exceptionsHelper';
+import { HandleException } from 'src/utils/exceptions/exceptionsHelper';
 import { AttendanceListService } from './attendance-list.service';
 import { CreateAttendanceListDto } from './dto/create-attendance-list.dto';
 import { UpdateAttendanceListDto } from './dto/update-attendance-list.dto';

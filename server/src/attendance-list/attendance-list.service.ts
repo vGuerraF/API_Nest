@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { ClassroomService } from 'src/classroom/classroom.service';
-import { Exception } from 'src/user/utils/exceptions/exception';
-import { Exceptions } from 'src/user/utils/exceptions/exceptionsHelper';
+import { Exception } from 'src/utils/exceptions/exception';
+import { Exceptions } from 'src/utils/exceptions/exceptionsHelper';
 import { CreateAttendanceListDto } from './dto/create-attendance-list.dto';
 import { UpdateAttendanceListDto } from './dto/update-attendance-list.dto';
 import { AttendanceList } from './entities/attendance-list.entity';

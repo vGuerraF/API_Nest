@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { IUserEntity } from './entities/user.entity';
 import { PartialUserDto } from './services/dto/partialUserInput.dto';
-import { Exception } from './utils/exceptions/exception';
-import { Exceptions } from './utils/exceptions/exceptionsHelper';
+import { Exception } from '../utils/exceptions/exception';
+import { Exceptions } from '../utils/exceptions/exceptionsHelper';
 
 @Injectable()
 export class UserRepository {

@@ -13,7 +13,7 @@ import { IUserEntity } from './entities/user.entity';
 import { UserDto } from './services/dto/userInput.dto';
 import { PartialUserDto } from './services/dto/partialUserInput.dto';
 import { Response } from 'express';
-import { HandleException } from './utils/exceptions/exceptionsHelper';
+import { HandleException } from '../utils/exceptions/exceptionsHelper';
 
 @Controller('user')
 export class UserController {
