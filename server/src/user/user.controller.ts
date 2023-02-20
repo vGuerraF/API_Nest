@@ -7,23 +7,32 @@ import {
   Patch,
   Post,
   Res,
-} from '@nestjs/common/decorators';
-import { UserService } from './services/user.service';
-import { IUserEntity } from './entities/user.entity';
-import { UserDto } from './services/dto/userInput.dto';
-import { PartialUserDto } from './services/dto/partialUserInput.dto';
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { HandleException } from '../utils/exceptions/exceptionsHelper';
+import { IsTeacherAuthorization } from 'src/auth/decorators/is-teacher.decorator';
+import { userLogged } from 'src/auth/decorators/user-logged.decorator';
+import { HandleException } from 'src/utils/exceptions/exceptionsHelper';
+import { IUserEntity } from './entities/user.entity';
+import { PartialUserDto } from './services/dto/partialUserInput.dto';
+import { UserDto } from './services/dto/userInput.dto';
+import { UserService } from './services/user.service';
 
 @Controller('user')
-export class UserController {
+@ApiTags('Usuários')
+export default class UserController {
   constructor(private readonly service: UserService) {}
 
+  @UseGuards(AuthGuard(), IsTeacherAuthorization)
+  @ApiBearerAuth()
   @Get()
   async getAllUser(): Promise<IUserEntity[]> {
     return await this.service.getAllUsers();
   }
-
+  @UseGuards(AuthGuard(), IsTeacherAuthorization)
+  @ApiBearerAuth()
   @Get(':id')
   async getUserById(@Param('id') userId: string): Promise<IUserEntity> {
     try {
@@ -35,7 +44,7 @@ export class UserController {
 
   @Post()
   async createUser(
-    @Body() { cpf, email, password, name, role }: UserDto,
+    @Body() { cpf, email, password, name }: UserDto,
     @Res() response: Response,
   ) {
     try {
@@ -44,26 +53,38 @@ export class UserController {
         email,
         password,
         name,
-        role,
       });
+
       response.status(201).send(result);
     } catch (err) {
       HandleException(err);
     }
   }
 
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @Patch()
-  async updateUser(@Body() userData: PartialUserDto): Promise<IUserEntity> {
+  async updateUser(
+    @Body() userData: PartialUserDto,
+    @userLogged() user: IUserEntity,
+  ): Promise<IUserEntity> {
     try {
-      return await this.service.updateUser(userData);
+      if (userData.id) {
+        delete userData.id;
+      }
+      const dataToUpdate = { ...userData, id: user.id };
+      return await this.service.updateUser(dataToUpdate);
     } catch (err) {
       HandleException(err);
     }
   }
 
+  @UseGuards(AuthGuard())
+  @ApiBearerAuth()
   @Delete(':id')
   async deleteUserById(@Param('id') userId: string): Promise<string> {
     const userIsDeleted = await this.service.deleteUserById(userId);
+    console.log(userIsDeleted);
     if (userIsDeleted) {
       return 'User deleted successfully';
     } else {

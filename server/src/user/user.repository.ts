@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Exception } from 'src/utils/exceptions/exception';
+import { Exceptions } from 'src/utils/exceptions/exceptionsHelper';
 import { IUserEntity } from './entities/user.entity';
 import { PartialUserDto } from './services/dto/partialUserInput.dto';
-import { Exception } from '../utils/exceptions/exception';
-import { Exceptions } from '../utils/exceptions/exceptionsHelper';
 
 @Injectable()
 export class UserRepository {
@@ -14,7 +14,10 @@ export class UserRepository {
       const CreatedUser = await this.prisma.user.create({ data: user });
       return CreatedUser;
     } catch (err) {
-      throw new Exception(Exceptions.DatabaseException, err.message);
+      throw new Exception(
+        Exceptions.DatabaseException,
+        'Erro ao criar usuário cpf ou email ja cadastrados',
+      );
     }
   }
 
@@ -26,18 +29,21 @@ export class UserRepository {
       });
       return UpdatedUser;
     } catch (err) {
-      throw new Exception(Exceptions.DatabaseException, err.message);
+      throw new Exception(Exceptions.DatabaseException);
     }
   }
 
   async deleteUser(id: string): Promise<IUserEntity> {
     try {
-      const deleteUser = await this.prisma.user.delete({
+      const deletedUser = await this.prisma.user.delete({
         where: { id: id },
       });
-      return deleteUser;
+      return deletedUser;
     } catch (err) {
-      throw new Exception(Exceptions.DatabaseException, err.message);
+      throw new Exception(
+        Exceptions.DatabaseException,
+        'User not found in database',
+      );
     }
   }
 
@@ -46,7 +52,7 @@ export class UserRepository {
       const allUsers = await this.prisma.user.findMany();
       return allUsers;
     } catch (err) {
-      throw new Exception(Exceptions.DatabaseException, err.message);
+      throw new Exception(Exceptions.DatabaseException);
     }
   }
 
@@ -55,9 +61,24 @@ export class UserRepository {
       const foundUser = await this.prisma.user.findUniqueOrThrow({
         where: { id: id },
       });
+
       return foundUser;
     } catch (err) {
-      throw new Exception(Exceptions.DatabaseException, err.message);
+      throw new Exception(Exceptions.DatabaseException);
+    }
+  }
+
+  async findUserByEmail(email: string): Promise<IUserEntity> {
+    try {
+      const foundUser = await this.prisma.user.findUniqueOrThrow({
+        where: { email: email },
+      });
+      return foundUser;
+    } catch (err) {
+      throw new Exception(
+        Exceptions.DatabaseException,
+        'user not found with this email',
+      );
     }
   }
 }
