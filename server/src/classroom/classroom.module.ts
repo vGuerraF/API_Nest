@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
 import { ClassroomController } from './classroom.controller';
-import { ClassroomRepository } from './classrom.repository';
+import { ClassroomRepository } from './classroom.repository';
 import { DatabaseModule } from 'src/prisma/database.module';
 import { PassportModule } from '@nestjs/passport';
 

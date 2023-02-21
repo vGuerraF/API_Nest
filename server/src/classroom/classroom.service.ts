@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'node:crypto';
 import { Exception } from 'src/utils/exceptions/exception';
 import { Exceptions } from 'src/utils/exceptions/exceptionsHelper';
-import { ClassroomRepository } from './classrom.repository';
+import { ClassroomRepository } from './classroom.repository';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import {
   AddStudentClassroomDto,
