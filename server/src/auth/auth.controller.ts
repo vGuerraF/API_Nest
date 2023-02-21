@@ -7,7 +7,7 @@ import { HandleException } from 'src/utils/exceptions/exceptionsHelper';
 import { AuthService } from './auth.service';
 import { IsTeacherAuthorization } from './decorators/is-teacher.decorator';
 import { userLogged } from './decorators/user-logged.decorator';
-import { UserLoginDto } from './dto/user-login-input.dto';
+import { UserLoginDto } from './dto/user-login-input';
 
 @Controller('Authorization')
 @ApiTags('Authorization')

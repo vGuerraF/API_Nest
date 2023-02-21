@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/services/user.service';
-import { UserLoginDto } from './dto/user-login-input.dto';
+import { UserLoginDto } from './dto/user-login-input';
 import { compare } from 'bcrypt';
 import { Exception } from 'src/utils/exceptions/exception';
 import { Exceptions } from 'src/utils/exceptions/exceptionsHelper';
